@@ -25,9 +25,9 @@ The service includes two API calls:
 
 Above are three calls originated to the coordination service for indexing purposes. i.e. one can query each request by type (supply or demand), timestamp (for simplicity only the day in the month and time in a day) and by region.
 2. I have x vCPUs for until t
-/map.php?cmd=append&key=SupplyEvents&value=${timestamp},${day},us_${region-prefix},${num-cpu}
-/map.php?cmd=append&key=${day}-${timestamp}&value=SupplyEvents,us_${region-prefix},${num-cpu}
-/map.php?cmd=append&key=us_${region-prefix}&value=SupplyEvents,${day}-${timestamp},${num-cpu}
+###### /map.php?cmd=append&key=SupplyEvents&value=${timestamp},${day},us_${region-prefix},${num-cpu}
+###### /map.php?cmd=append&key=${day}-${timestamp}&value=SupplyEvents,us_${region-prefix},${num-cpu}
+###### /map.php?cmd=append&key=us_${region-prefix}&value=SupplyEvents,${day}-${timestamp},${num-cpu}
 
 Above are three calls originated to the coordination service for indexing purposes. i.e. one can query each request by type (supply or demand), timestamp (for simplicity only the day in the month and time in a day) and by region.
 
