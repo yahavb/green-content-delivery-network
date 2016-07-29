@@ -16,9 +16,9 @@ The simulation includes three core systems:
 The service includes two API calls: 
 
 1. I want x vCPUs within y minutes i.e. 
-/map.php?cmd=append&key=DemandEvents&value=${timestamp},${day},us_${region-prefix},${num-cpu}
-/map.php?cmd=append&key=${day}-${timestamp}&value=DemandEvents,us_${region-prefix},${num-cpu}
-/map.php?cmd=append&key=us_${region-prefix}&value=DemandEvents,${day}-${timestamp},${num-cpu}
+#####/map.php?cmd=append&key=DemandEvents&value=${timestamp},${day},us_${region-prefix},${num-cpu}
+#####/map.php?cmd=append&key=${day}-${timestamp}&value=DemandEvents,us_${region-prefix},${num-cpu}
+#####/map.php?cmd=append&key=us_${region-prefix}&value=DemandEvents,${day}-${timestamp},${num-cpu}
 
 Above are three calls originated to the coordination service for indexing purposes. i.e. one can query each request by type (supply or demand), timestamp (for simplicity only the day in the month and time in a day) and by region.
 2. I have x vCPUs for until t
