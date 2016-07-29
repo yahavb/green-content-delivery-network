@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
+date_default_timezone_set('America/Chicago');
 require 'Predis/Autoloader.php';
 use Predis\Collection\Iterator;
 Predis\Autoloader::register();
@@ -13,6 +13,8 @@ if (isset($_GET['cmd']) === true) {
   }
   header('Content-Type: application/json');
 
+  $date = new DateTime();
+  $date->format('U = Y-m-d H:i:s');
 
   switch ($_GET['cmd']){
     case 'set':
@@ -30,8 +32,16 @@ if (isset($_GET['cmd']) === true) {
     	'host'  => $host,
 	'port'	=> 6379,
        ]);
-       $val=",(".$_GET['value'].")";
-       $client->append($_GET['key'],$val);
+       $timestamp=$date->getTimestamp();
+       $curr_date=date_format($date, 'Y-m-d H:i:s');
+       $curr_date_min=date_format($date, 'Y-m-d H:i');
+
+       $key=$_GET['key'];
+       if ($key=="timestamp")
+	$key=$curr_date_min;
+
+       $val=",(".$_GET['value'].",".$timestamp.",".$curr_date.")";
+       $client->append($key,$val);
        print('{"message": "Updated"}');
        break;
     case 'get':
