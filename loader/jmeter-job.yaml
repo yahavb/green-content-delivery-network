@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: greencdn-simulation
+spec:
+  #completions:8
+  #parallelism:2
+  template:
+    metadata:
+      name: greencdn-simulation
+    spec:
+      containers:
+      - name: greencdn-simulation
+        image: gcr.io/api-project-79515284030/greencdn-loader-image
+        command: ["bin/jmeter -n -t ~/green-cdn-simulation-plan.jmx"]
+      restartPolicy: OnFailure
