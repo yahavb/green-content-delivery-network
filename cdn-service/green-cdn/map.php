@@ -6,6 +6,11 @@ require 'Predis/Autoloader.php';
 use Predis\Collection\Iterator;
 Predis\Autoloader::register();
 
+$date = new DateTime();
+$timestamp=$date->getTimestamp();
+$curr_date=date_format($date, 'Y/m/d H:i:s');
+$curr_date_min=date_format($date, 'Y/m/d H:i');
+
 if (isset($_GET['cmd']) === true) {
   $host = 'redis-master';
   if (getenv('GET_HOSTS_FROM') == 'env') {
@@ -13,8 +18,6 @@ if (isset($_GET['cmd']) === true) {
   }
   header('Content-Type: application/json');
 
-  $date = new DateTime();
-  $date->format('U = Y-m-d H:i:s');
 
   switch ($_GET['cmd']){
     case 'set':
@@ -32,15 +35,18 @@ if (isset($_GET['cmd']) === true) {
     	'host'  => $host,
 	'port'	=> 6379,
        ]);
-       $timestamp=$date->getTimestamp();
-       $curr_date=date_format($date, 'Y-m-d H:i:s');
-       $curr_date_min=date_format($date, 'Y-m-d H:i');
 
        $key=$_GET['key'];
-       if ($key=="timestamp")
-	$key=$curr_date_min;
+       if ($key=="timestamp"){
+        if (isset($_GET['opt'])=== true){
+	  $opt=$_GET['opt'];
+          $key="TS".$curr_date_min."-".$opt;
+        }
+        else
+	  $key="TS".$curr_date_min;
+       }
 
-       $val=",(".$_GET['value'].",".$timestamp.",".$curr_date.")";
+       $val=",".$_GET['value']."-".$timestamp."-".$curr_date;
        $client->append($key,$val);
        print('{"message": "Updated"}');
        break;
@@ -56,6 +62,54 @@ if (isset($_GET['cmd']) === true) {
        ]);
        $value = $client->get($_GET['key']);
        print('{"data": "' . $value.'"}');
+       break;
+    case 'val_cnt_by_key':
+       $host = 'redis-slave';
+       if (getenv('GET_HOSTS_FROM') == 'env') {
+        $host = getenv('REDIS_SLAVE_SERVICE_HOST');
+       }
+       $client = new Predis\Client([
+        'scheme' => 'tcp',
+        'host'   => $host,
+        'port'   => 6379,
+       ]);
+       $key=$_GET['key'];
+       $value_raw = $client->get($key);
+       $value_arr = explode(",",$value_raw); 
+       print($key.",".count($value_arr));
+       break;
+    case 'cnt_by_keys':
+       $host = 'redis-slave';
+       if (getenv('GET_HOSTS_FROM') == 'env') {
+        $host = getenv('REDIS_SLAVE_SERVICE_HOST');
+       }
+       $client = new Predis\Client([
+        'scheme' => 'tcp',
+        'host'   => $host,
+        'port'   => 6379,
+       ]);
+       $key_arr = $client->keys($_GET['key']);
+       foreach($key_arr as $key){
+         $value_raw = $client->get($key);
+         $value_arr = explode(",",$value_raw); 
+         print($key.",".count($value_arr).PHP_EOL);
+       }
+       break;
+    case 'keys':
+       $host = 'redis-slave';
+       if (getenv('GET_HOSTS_FROM') == 'env') {
+        $host = getenv('REDIS_SLAVE_SERVICE_HOST');
+       }
+       $client = new Predis\Client([
+        'scheme' => 'tcp',
+        'host'   => $host,
+        'port'   => 6379,
+       ]);
+       $key_arr = $client->keys($_GET['key']);
+       foreach($key_arr as $key){
+         $value = $client->get($key);
+         print($key."-".$value.PHP_EOL);
+       }
        break;
     case 'purge':
        $host = 'redis-master';
@@ -88,13 +142,10 @@ if (isset($_GET['cmd']) === true) {
 	$pattern='*';
        else
 	$pattern=$_GET['pattern'];
-          #print('{"data": "');
        foreach (new Iterator\Keyspace($client, $pattern) as $key) {
         $val = $client->get($key);
-           #print('{'. $key . ":" . $val .'},');
-        print($key.",".$val.PHP_EOL);
+        print($key.",".$val);
        }
-          #print('"}');
        break;
     default:
        print('http://host/map.php?cmd=set&key=key1&value=val1'.PHP_EOL);
@@ -102,6 +153,12 @@ if (isset($_GET['cmd']) === true) {
        print('http://host/map.php?cmd=get&key=key1'.PHP_EOL);
        print('http://host/map.php?cmd=all'.PHP_EOL);
        print('http://host/map.php?cmd=all&pattern=*a*'.PHP_EOL);
+       print('http://host/map.php?cmd=all&pattern=*a*'.PHP_EOL);
+       print('http://host/map.php?cmd=append&key=timestamp&value=val&opt=opt'.PHP_EOL);
+       print('http://host/map.php?cmd=keys&key=TS*us*'.PHP_EOL);
+       print('http://host/map.php?cmd=keys&key=TS*us*'.PHP_EOL);
+       print('http://host/map.php?cmd=cnt_by_keys&key=TS*'.PHP_EOL);
+       print('http://host/map.php?cmd=val_cnt_by_key&key=SupplyEvents'.PHP_EOL);
   }
 } else {
   print('http://host/map.php?cmd');
