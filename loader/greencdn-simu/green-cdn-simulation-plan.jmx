@@ -12,11 +12,39 @@
             <stringProp name="Argument.value">104.154.70.81</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="alpha" elementType="Argument">
+            <stringProp name="Argument.name">alpha</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="beta" elementType="Argument">
+            <stringProp name="Argument.name">beta</stringProp>
+            <stringProp name="Argument.value">0.5</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
+      <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="dem_rand" enabled="true">
+        <stringProp name="variableName">dem_rand</stringProp>
+        <stringProp name="outputFormat"></stringProp>
+        <stringProp name="minimumValue">111</stringProp>
+        <stringProp name="maximumValue">444</stringProp>
+        <stringProp name="randomSeed"></stringProp>
+        <boolProp name="perThread">false</boolProp>
+      </RandomVariableConfig>
+      <hashTree/>
+      <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="sup_rand" enabled="true">
+        <stringProp name="variableName">sup_rand</stringProp>
+        <stringProp name="outputFormat"></stringProp>
+        <stringProp name="minimumValue">100</stringProp>
+        <stringProp name="maximumValue">333</stringProp>
+        <stringProp name="randomSeed"></stringProp>
+        <boolProp name="perThread">false</boolProp>
+      </RandomVariableConfig>
+      <hashTree/>
       <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="region-prefix" enabled="true">
         <stringProp name="maximumValue">18</stringProp>
         <stringProp name="minimumValue">1</stringProp>
@@ -27,8 +55,8 @@
       </RandomVariableConfig>
       <hashTree/>
       <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="num-cpu" enabled="true">
-        <stringProp name="maximumValue">30</stringProp>
-        <stringProp name="minimumValue">1</stringProp>
+        <stringProp name="maximumValue">300</stringProp>
+        <stringProp name="minimumValue">100</stringProp>
         <stringProp name="outputFormat"></stringProp>
         <boolProp name="perThread">false</boolProp>
         <stringProp name="randomSeed"></stringProp>
@@ -58,7 +86,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10000</stringProp>
+          <stringProp name="LoopController.loops">100000</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -69,16 +97,29 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="Gaussian Random Timer" enabled="false">
-          <stringProp name="ConstantTimer.delay">${num-cpu}*500</stringProp>
-          <stringProp name="RandomTimer.range">${region-prefix}*400.0</stringProp>
-        </GaussianRandomTimer>
-        <hashTree/>
-        <PoissonRandomTimer guiclass="PoissonRandomTimerGui" testclass="PoissonRandomTimer" testname="Poisson Random Timer" enabled="true">
-          <stringProp name="ConstantTimer.delay">300</stringProp>
-          <stringProp name="RandomTimer.range">100</stringProp>
-          <stringProp name="TestPlan.comments">${num-cpu}*100</stringProp>
-        </PoissonRandomTimer>
+        <BeanShellTimer guiclass="TestBeanGUI" testclass="BeanShellTimer" testname="weibull Timer" enabled="true">
+          <boolProp name="resetInterpreter">true</boolProp>
+          <stringProp name="parameters">${__Random(1,10)}</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">import org.apache.commons.math3.distribution.WeibullDistribution;
+
+alpha = Float.valueOf(vars.get(&quot;alpha&quot;));
+beta = Float.valueOf(vars.get(&quot;beta&quot;));
+rng= Float.valueOf(bsh.args[0]);
+Double n;
+try {
+    WeibullDistribution g= new WeibullDistribution(rng, alpha,beta);
+    n=g.sample();
+    log.info(&quot;sample=&quot;+Double.toString(n));
+    return n;
+}
+catch (Throwable ex) {
+    log.error(&quot;Something wrong&quot;, ex);
+    throw ex;
+}
+
+</stringProp>
+        </BeanShellTimer>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="SupplyEvents" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
@@ -174,7 +215,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/map.php?cmd=append&amp;key=timestamp&amp;value=SupplyEvents-us_${region-prefix}-${num-cpu}-sup_${supply_request_id}&amp;opt=sup</stringProp>
+          <stringProp name="HTTPSampler.path">/map.php?cmd=append&amp;key=timestamp&amp;value=SupplyEvents-us_${region-prefix}-${num-cpu}-sup_${supply_request_id}&amp;opt=TYPE_sup</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -223,7 +264,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10000</stringProp>
+          <stringProp name="LoopController.loops">100000</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -236,14 +277,13 @@
       <hashTree>
         <PoissonRandomTimer guiclass="PoissonRandomTimerGui" testclass="PoissonRandomTimer" testname="Poisson Random Timer" enabled="true">
           <stringProp name="ConstantTimer.delay">300</stringProp>
-          <stringProp name="RandomTimer.range">${region-prefix}*100</stringProp>
+          <stringProp name="RandomTimer.range">${sup_rand}</stringProp>
         </PoissonRandomTimer>
         <hashTree/>
-        <GaussianRandomTimer guiclass="GaussianRandomTimerGui" testclass="GaussianRandomTimer" testname="Gaussian Random Timer" enabled="false">
-          <stringProp name="ConstantTimer.delay">300</stringProp>
-          <stringProp name="RandomTimer.range">700</stringProp>
-          <stringProp name="TestPlan.comments">${num-cpu}*700</stringProp>
-        </GaussianRandomTimer>
+        <PoissonRandomTimer guiclass="PoissonRandomTimerGui" testclass="PoissonRandomTimer" testname="Poisson Random Timer" enabled="false">
+          <stringProp name="ConstantTimer.delay">0</stringProp>
+          <stringProp name="RandomTimer.range">${__Random(4,6)}</stringProp>
+        </PoissonRandomTimer>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="DemandEvents" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pré-définies" enabled="true">
@@ -340,7 +380,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/map.php?cmd=append&amp;key=timestamp&amp;value=DemandEvents-us_${region-prefix}-${num-cpu}-dem_${demand_request_id}&amp;opt=dem</stringProp>
+          <stringProp name="HTTPSampler.path">/map.php?cmd=append&amp;key=timestamp&amp;value=DemandEvents-us_${region-prefix}-${num-cpu}-dem_${demand_request_id}&amp;opt=TYPE_dem</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
