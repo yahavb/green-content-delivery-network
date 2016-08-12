@@ -28,5 +28,14 @@ RUN sed -i 's#CustomLog /proc/self/fd/1 combined#CustomLog "|/bin/cat" combined#
 
 #ADD greencdn.php /var/www/html/greencdn.php
 #ADD controllers.js /var/www/html/controllers.js
-ADD index.html /var/www/html/file.html
-ADD docker-php.conf /etc/apache2/conf-available/docker-php.conf
+#ADD index.html /var/www/html/file.html
+ADD docker-php.conf /etc/apache2/conf-enabled/docker-php.conf
+ADD big_buck_bunny_240p_50mb.mp4 /var/www/html/big_buck_bunny_240p_50mb.mp4
+ADD big_buck_bunny_480p_1mb.mp4 /var/www/html/big_buck_bunny_480p_1mb.mp4
+ADD big_buck_bunny_720p_10mb.mp4 /var/www/html/big_buck_bunny_720p_10mb.mp4
+ADD big_buck_bunny_720p_1mb.mp4 /var/www/html/big_buck_bunny_720p_1mb.mp4
+ADD big_buck_bunny_720p_20mb.mp4 /var/www/html/big_buck_bunny_720p_20mb.mp4
+ADD big_buck_bunny_720p_2mb.mp4 /var/www/html/big_buck_bunny_720p_2mb.mp4
+ADD big_buck_bunny_720p_30mb.mp4 /var/www/html/big_buck_bunny_720p_30mb.mp4
+ADD big_buck_bunny_720p_50mb.mp4 /var/www/html/big_buck_bunny_720p_50mb.mp4 
+ADD big_buck_bunny_720p_5mb.mp4 /var/www/html/big_buck_bunny_720p_5mb.mp4

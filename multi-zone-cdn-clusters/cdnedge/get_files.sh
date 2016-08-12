@@ -1,0 +1,9 @@
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_2mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_10mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_30mb.mp4
+wget http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_50mb.mp4
+wget http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_1mb.mp4
+wget http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_50mb.mp4 
