@@ -5,13 +5,14 @@ The simulation includes a cross-region distributed system that accepts supply of
 
 The simulation will manifest a coordination system between the supply and demand as fast data system. It will process two kinds of requests (1) user workload (2) available green-cdn. The requests will be sent to a fast-data db that will create a match and assign demanded workload to supplied resources. 
 
-The simulation includes three core systems:
-###1. loaders that simulate workloads and supply based on real data.
-###2. multi-tier api servers that consumes the loaders data.
-###3. coordination system that pull the data from 2 and calculated the match and assign jobs.
+The simulation includes four core systems:
+* loaders that simulate workloads and supply based on real data
+* multi-tier api servers that consumes the loaders data.
+* coordination system that pull the data from 2 and calculated the match and assign jobs.
+* Multi Zones CDN Clusters that process the workload
 
 
-##2 - API server
+##2 - coordination systems
 
 The service includes two API calls: 
 
@@ -50,8 +51,6 @@ The API exposed via HTTP that registers the data, persist it in distributed Redi
 ### Architecture
 The frontend layer includes Apache Http server loaded with php. It is currently uses php:5-apache docker image. 
 It includes php-based redis app that allows a sensor to report to the system.
-
-
 
 ### Command Ref.
 ####git
