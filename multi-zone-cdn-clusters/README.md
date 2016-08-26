@@ -36,3 +36,20 @@ gcloud container clusters create cdn-edg-us-central1-b --scopes cloud-platform -
 gcloud container clusters create cdn-edg-us-west1-b --scopes cloud-platform --zone us-west1-b
 gcloud container clusters create cdn-edg-us-east1-b --scopes cloud-platform --zone us-east1-b
 ```
+
+###cluster config
+In order to add cluster into the federation we require to create kubernetes cluster config and kubeconfig.
+
+The ```cluster config``` is a Kubernetes cluster object and holds information required by the Kubernetes Federated Controller Manager to add a cluster to a federation.
+The ```kubeconfig``` file is a standard Kubernetes configuration object that is used to provide API Server credentials to Kubernetes clients. You will need one kubeconfig file for each cluster in the federation.
+
+####kubeconfig
+Load the kubeconfig from each cluster created before
+
+```
+gcloud container clusters get-credentials cdn-edg-us-central1-b --zone=us-central1-b
+gcloud container clusters get-credentials cdn-edg-us-east1-b --zone=us-east1-b
+gcloud container clusters get-credentials cdn-edg-us-west1-b --zone=us-west1-b
+```
+
+Listing 
