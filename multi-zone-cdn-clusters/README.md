@@ -22,8 +22,11 @@ A CDN edge deployments includes an apache instacne that is preloaded with a rang
 
 ###Structure
 ```/clusters``` stores the three regions cluster specifications. If need to be recreated serverAddress needs to be replaced with new address.
+
 ```/deployments``` stores the federation-apiserver that will be used for coordinating kubernetes API across clusters. Also, it includes the controller manager.
+
 ```/ns``` The control panel namespece, federation
+
 ```/services``` stores the federation-apiserver service and the data plane, the cdn-edge service.
 
 
