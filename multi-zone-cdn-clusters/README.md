@@ -4,8 +4,7 @@ CDN deployments usually spans across multiple regions. Our approch will even ext
 provides geographic distribution and signifcantly improves the service availibility. 
 
 This prototype uses Kuberentes 1.3 for achieving the multi zone deployments. The multi-zone cluster implemented below spans across three
-regions:
-```https://cloud.google.com/compute/docs/regions-zones/regions-zones```
+regions(```https://cloud.google.com/compute/docs/regions-zones/regions-zones```):
 
 * us-central1-b
 * us-east1-b
