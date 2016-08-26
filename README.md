@@ -15,6 +15,9 @@ The simulation will manifest a coordination system between the supply and demand
 The simulation includes four core systems:
 * Loaders - loaders that simulate workloads and supply based on real data
 ```https://github.com/yahavb/green-content-delivery-network/tree/master/loader```
+
 * Data Plane - coordination system that pull the data from 2 and calculated the match and assign jobs. ```https://github.com/yahavb/green-content-delivery-network/tree/master/cdn-orchestrator```
+
 * Control Plane - Multi Zones CDN Clusters that process the workload
 ```https://github.com/yahavb/green-content-delivery-network/tree/master/multi-zone-cdn-clusters```
+
