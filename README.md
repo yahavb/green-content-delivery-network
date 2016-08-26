@@ -13,11 +13,10 @@ The simulation includes a cross-region distributed system that accepts supply of
 The simulation will manifest a coordination system between the supply and demand as fast data system. It will process two kinds of requests (1) user workload (2) available green-cdn. The requests will be sent to a fast-data db that will create a match and assign demanded workload to supplied resources. 
 
 The simulation includes four core systems:
-* Loaders - loaders that simulate workloads and supply based on real data
-```https://github.com/yahavb/green-content-delivery-network/tree/master/loader```
+* Loaders - loaders that simulate workloads and supply based on real data https://github.com/yahavb/green-content-delivery-network/tree/master/loader
 
-* Data Plane - coordination system that pull the data from 2 and calculated the match and assign jobs ```https://github.com/yahavb/green-content-delivery-network/tree/master/cdn-orchestrator```
+* Data Plane - coordination system that pull the data from 2 and calculated the match and assign jobs https://github.com/yahavb/green-content-delivery-network/tree/master/cdn-orchestrator 
 
-* Control Plane - Multi Zones CDN Clusters that process the workload ```https://github.com/yahavb/green-content-delivery-network/tree/master/multi-zone-cdn-clusters```
+* Control Plane - Multi Zones CDN Clusters that process the workload https://github.com/yahavb/green-content-delivery-network/tree/master/multi-zone-cdn-clusters
 
 As
