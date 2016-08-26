@@ -29,4 +29,5 @@ A CDN edge deployments includes an apache instacne that is preloaded with a rang
 
 ```/services``` stores the federation-apiserver service and the data plane, the cdn-edge service.
 
-
+##CDN Edge Control Plane Build-out
+###Clusters Bootstrap
