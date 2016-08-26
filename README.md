@@ -1,4 +1,4 @@
-# greencdn
+# Enabling Green Content Distribution Network by Clouds Orchestration
 This is a simulation of content delivery networks that opportunistically allocates compute resources for CDN workloads that fits the user demand and the resources supply.
 
 The simulation includes a cross-region distributed system that accepts supply of compute resources that runs on green-energy. It is a pre-allocated set of compute resources that meant to be used for any workload. When a green-energy source is not available the compute resource will remain idle in standby mode with no need for UPS as suggested in Open CloudServer OCS Chassis Management Specification Version 2.0. When a green energy is available the compute resources will resume its operation, accept,process infra-health calls and be ready for processing workload. 
